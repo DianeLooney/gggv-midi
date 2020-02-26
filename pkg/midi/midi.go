@@ -11,6 +11,7 @@ import (
 const (
 	NoteOff   = 8
 	NoteOn    = 9
+	Volume    = 11
 	PitchBend = 14
 )
 
@@ -94,6 +95,9 @@ func Log(name string) StreamFunc {
 
 func Tee(in chan Message, n int) (outs []chan Message) {
 	outs = make([]chan Message, n)
+	for i := 0; i < n; i++ {
+		outs[i] = make(chan Message)
+	}
 	go func() {
 		for m := range in {
 			for _, o := range outs {
